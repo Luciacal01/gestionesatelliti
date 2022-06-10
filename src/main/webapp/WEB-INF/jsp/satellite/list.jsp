@@ -60,8 +60,8 @@
 										<tr>
 											<td>${satelliteItem.denominazione }</td>
 											<td>${satelliteItem.codice }</td>
-											<td><fmt:formatDate type = "date" value = "${satelliteItem.dataDiLancio }" /></td>
-											<td><fmt:formatDate type = "date" value = "${satelliteItem.dataDiRilancio }" /></td>
+											<td><fmt:formatDate type = "date" value = "${satelliteItem.dataLancio }" /></td>
+											<td><fmt:formatDate type = "date" value = "${satelliteItem.dataRientro}" /></td>
 											<td>${satelliteItem.stato }</td>
 											<td>
 												<a class="btn  btn-sm btn-outline-secondary" href="${pageContext.request.contextPath}/satellite/show/${satelliteItem.id }">Visualizza</a>

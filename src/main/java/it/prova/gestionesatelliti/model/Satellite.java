@@ -30,15 +30,14 @@ public class Satellite {
 	@Column(name = "codice")
 	private String codice;
 	
-	@NotNull(message = "{dataLancio.notnull}")
+	
 	@Column(name = "dataLancio")
 	private Date dataLancio;
 	
-	@NotNull(message = "{dataRientro.notnull}")
+	
 	@Column(name = "dataRientro")
 	private Date dataRientro;
 	
-	@NotNull(message = "{stato.notblank}")
 	@Column(name = "stato")
 	@Enumerated(EnumType.STRING)
 	private StatoSatellite stato;
