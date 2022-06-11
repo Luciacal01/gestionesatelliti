@@ -1,6 +1,7 @@
 package it.prova.gestionesatelliti.service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.criteria.Predicate;
@@ -11,8 +12,8 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import it.prova.gestionesatelliti.exception.IdNonTrovato;
 import it.prova.gestionesatelliti.model.Satellite;
+import it.prova.gestionesatelliti.model.StatoSatellite;
 import it.prova.gestionesatelliti.repository.SatelliteRepository;
 
 @Service
@@ -78,11 +79,21 @@ public class SatelliteServiceImpl implements SatelliteService {
 		return repository.findAll(specificationCriteria);
 	}
 
-	//@Override
-	//@Transactional(readOnly=true)
-	//public List<Satellite> cercaByDenominazioneECodiceILike(String denominazioneTerm, String codiceTerm) {
-		// TODO Auto-generated method stub
-	//	return null;
-	//}
+	@Override
+	@Transactional(readOnly=true)
+	public List<Satellite> cercaSatellitiInOrbitaPerPiùDiDueAnni(Date data, StatoSatellite stato) {
+		return (List<Satellite>) repository.findAllByDataLancioBeforeAndStatoNot(data, stato);
+	}
+
+	@Override
+	public List<Satellite> cercaSatellitiDisattivatiErimastiInOrbitaPer(Date dataLancio, Date dataRientro,
+			StatoSatellite stato) {
+		return (List<Satellite>) repository.findAllByDataLancioAndDataRientroAndStato(dataLancio, dataRientro, stato);
+	}
+
+	@Override
+	public List<Satellite> cercaSatellitiNonRientrati(StatoSatellite stato) {
+		return (List<Satellite>) repository.findAllByStatoAndDataRientroIsNull(stato);
+	}
 
 }

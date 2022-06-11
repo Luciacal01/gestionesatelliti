@@ -131,4 +131,15 @@ public class SatelliteController {
 		return "redirect:/satellite/listAll";
 	}
 	
+	@GetMapping("/rientra/{idSatellite}")
+	public String rientra(@PathVariable(required = true)Long idSatellite, RedirectAttributes redirectAttributes) {
+		Satellite satellite= satelliteService.caricaSingoloElemento(idSatellite);
+		satellite.setDataRientro(new Date());
+		satellite.setStato(StatoSatellite.DISATTIVATO);
+		satelliteService.aggiorna(satellite);
+		redirectAttributes.addFlashAttribute("successMessage", "Operazione eseguita correttamente");
+		return "redirect:/satellite/listAll";
+	}
+	
+	
 }

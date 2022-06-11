@@ -1,8 +1,10 @@
 package it.prova.gestionesatelliti.service;
 
+import java.util.Date;
 import java.util.List;
 
 import it.prova.gestionesatelliti.model.Satellite;
+import it.prova.gestionesatelliti.model.StatoSatellite;
 
 public interface SatelliteService {
 	public List<Satellite> listAllElements();
@@ -17,5 +19,11 @@ public interface SatelliteService {
 	
 	public List<Satellite> findByExample(Satellite example);
 	
-	//public List<Satellite> cercaByDenominazioneECodiceILike(String denominazioneTerm, String codiceTerm);
+	public List<Satellite> cercaSatellitiInOrbitaPerPiùDiDueAnni(Date data, StatoSatellite stato);
+	
+	public List<Satellite> cercaSatellitiDisattivatiErimastiInOrbitaPer(Date dataLancio, Date dataRientro,StatoSatellite stato);
+	
+	public List<Satellite> cercaSatellitiNonRientrati(StatoSatellite stato);
+	
+	
 }
