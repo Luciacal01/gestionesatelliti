@@ -14,10 +14,13 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+
 import it.prova.gestionesatelliti.model.Satellite;
+import it.prova.gestionesatelliti.model.SatelliteValidator;
 import it.prova.gestionesatelliti.model.StatoSatellite;
 import it.prova.gestionesatelliti.service.SatelliteService;
 
@@ -27,6 +30,9 @@ public class SatelliteController {
 	
 	@Autowired
 	private SatelliteService satelliteService;
+	
+	@Autowired
+	private SatelliteValidator satelliteValidator;
 	
 	@GetMapping("/listAll")
 	public ModelAndView listAll() {
@@ -57,22 +63,13 @@ public class SatelliteController {
 	
 	@PostMapping("/save")
 	public String save(@Valid @ModelAttribute("insert_satellite_attribute") Satellite satellite, BindingResult result, RedirectAttributes redirectAttributes) {
+		//if(satellite.getDataLancio()!=null || satellite.getDataRientro()!=null) {
+			satelliteValidator.validate(satellite, result);
+		//}
+		
 		if(result.hasErrors()) 
 			return "satellite/insert";
-		if(satellite.getDataLancio()!=null || satellite.getDataRientro()!=null || satellite.getStato()!=null) {
-			if(satellite.getStato().equals(StatoSatellite.DISATTIVATO) && satellite.getDataRientro()== null) {
-				result.rejectValue("stato","", "Inserire una data di rientro, modificare");
-			}
-			
-			if(satellite.getDataLancio().after(satellite.getDataRientro())) {
-				result.rejectValue("dataLancio","", "Data di rientro precedente della data di lancio, modificare");
-			}
-			
-			if((satellite.getStato().equals(StatoSatellite.IN_MOVIMENTO) || satellite.getStato().equals(StatoSatellite.FISSO)) && satellite.getDataRientro()!= null ) {
-				result.rejectValue("dataRientro","", "La data di rientro deve essere a null, modificare");
-			}
-			return "satellite/insert";
-		}
+
 		
 		satelliteService.inserisciNuovo(satellite);
 		redirectAttributes.addFlashAttribute("successMessage", "Operazione eseguita correttamente");
@@ -84,4 +81,36 @@ public class SatelliteController {
 		model.addAttribute("show_satellite_attribute", satelliteService.caricaSingoloElemento(idSatellite));
 		return "satellite/show";
 	}
+	
+	@GetMapping("/delete/{idSatellite}")
+	public String delete(@PathVariable(required =true) Long idSatellite, Model model) {
+		model.addAttribute("delete_satellite_attr", satelliteService.caricaSingoloElemento(idSatellite));
+		return "satellite/delete";
+	}
+	
+	@PostMapping("/remove")
+	public String remove(@Valid @RequestParam(required = true) Long idSatellite, Model model, BindingResult result, RedirectAttributes redirectAttributes) {
+		if(result.hasErrors())
+			return "satellite/delete/{idSatellite}";
+		Satellite satellite= satelliteService.caricaSingoloElemento(idSatellite);
+		
+		//result
+		
+		if(satellite.getDataLancio()!=null && satellite.getDataRientro()==null ) {
+			result.rejectValue("dataLancio", "", "impossibile eliminare un satellite non ancora rientrato");
+			return "satellite/delete/{idSatellite}";
+		}
+		if(satellite.getStato().equals(StatoSatellite.DISATTIVATO) && satellite.getDataRientro()==null ) {
+			result.rejectValue("dataRientro", "", "impossibile eliminare un satellite non ancora rientrato");
+			return "satellite/delete/{idSatellite}";
+		}
+		
+		
+		satelliteService.rimuovi(idSatellite);
+		
+		redirectAttributes.addFlashAttribute("successMessage", "Operazione eseguita correttamente");
+		return "redirect:/satellite/listAll";
+		
+	}
+	
 }
