@@ -1,5 +1,6 @@
 package it.prova.gestionesatelliti.web.controller;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -20,6 +21,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import it.prova.gestionesatelliti.model.Satellite;
 import it.prova.gestionesatelliti.model.SatelliteValidator;
+import it.prova.gestionesatelliti.model.StatoSatellite;
 import it.prova.gestionesatelliti.service.SatelliteService;
 
 @Controller
@@ -87,8 +89,8 @@ public class SatelliteController {
 	
 	@PostMapping("/remove")
 	public String remove(@RequestParam(required = true) Long idSatellite, Model model, RedirectAttributes redirectAttributes) {
-		if(!satelliteValidator.isValidatorForDelete(satelliteService.caricaSingoloElemento(idSatellite))) {
-			redirectAttributes.addFlashAttribute("failedMessage", "Impossibile eliminare il satellite");
+		if(satelliteValidator.isValidatorForDelete(satelliteService.caricaSingoloElemento(idSatellite))) {
+			redirectAttributes.addFlashAttribute("failedMessage", "Impossibile cancellare satellite");
 			return "redirect:/satellite/listAll";
 		}
 		
@@ -117,6 +119,15 @@ public class SatelliteController {
 		
 		redirectAttributes.addFlashAttribute("successMessage", "Operazione eseguita correttamente");
 		return "redirect:/satellite/listAll";
+	}
+	
+	@GetMapping("/lancia/{idSatellite}")
+	public String lancia(@PathVariable(required = true)Long idSatellite, Model model) {
+		Satellite satellite= satelliteService.caricaSingoloElemento(idSatellite);
+		satellite.setDataLancio(new Date());
+		satellite.setStato(StatoSatellite.IN_MOVIMENTO);
+		model.addAttribute("lancia_satellite_attr", satellite );
+		return "satellite/lancia";
 	}
 	
 }

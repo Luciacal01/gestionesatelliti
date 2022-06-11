@@ -20,6 +20,10 @@ public class SatelliteValidator implements Validator {
 			errors.rejectValue("dataLancio", "", "Inserire una data di Lancio");
 		}
 		
+		if(satellite.getDataLancio()==null && satellite.getDataRientro()==null && satellite.getStato()!=null) {
+			errors.rejectValue("stato", "", "Inserire una data di Lancio");
+		}
+		
 		if(satellite.getStato()==StatoSatellite.DISATTIVATO && satellite.getDataRientro()== null) {
 			errors.rejectValue("stato","", "Inserire una data di rientro, modificare");
 		}
