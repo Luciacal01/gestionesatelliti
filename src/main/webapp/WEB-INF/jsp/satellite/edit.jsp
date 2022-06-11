@@ -86,7 +86,7 @@
 								</div>
 								
 								<div class="col-md-3">
-									<label for="stato" class="form-label">Stato <span class="text-danger"></span></label>
+									<label for="stato" class="form-label">Stato <span class="text-danger">*</span></label>
 								    <spring:bind path="stato">
 									    <select class="form-select ${status.error ? 'is-invalid' : ''}" id="stato" name="stato" required>
 									    	<option value="" selected> - Selezionare - </option>

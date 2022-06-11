@@ -122,12 +122,13 @@ public class SatelliteController {
 	}
 	
 	@GetMapping("/lancia/{idSatellite}")
-	public String lancia(@PathVariable(required = true)Long idSatellite, Model model) {
+	public String lancia(@PathVariable(required = true)Long idSatellite, RedirectAttributes redirectAttributes) {
 		Satellite satellite= satelliteService.caricaSingoloElemento(idSatellite);
 		satellite.setDataLancio(new Date());
 		satellite.setStato(StatoSatellite.IN_MOVIMENTO);
-		model.addAttribute("lancia_satellite_attr", satellite );
-		return "satellite/lancia";
+		satelliteService.aggiorna(satellite);
+		redirectAttributes.addFlashAttribute("successMessage", "Operazione eseguita correttamente");
+		return "redirect:/satellite/listAll";
 	}
 	
 }

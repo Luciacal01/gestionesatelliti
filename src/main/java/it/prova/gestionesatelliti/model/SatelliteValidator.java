@@ -50,5 +50,31 @@ public class SatelliteValidator implements Validator {
 		
 		return false;
 	}
+	
+	public boolean isValidatorForUpdate(Object target) {
+		Satellite satellite= (Satellite) target;
+		
+		if(satellite.getDataLancio()!=null && satellite.getDataRientro()==null) {
+			return true;
+		}
+		
+		if(satellite.getDataLancio()==null && satellite.getDataRientro()==null && satellite.getStato()!=null) {
+			return true;
+		}
+		
+		if(satellite.getStato()!=StatoSatellite.DISATTIVATO && satellite.getDataRientro()!= null) {
+			return true;
+		}
+		
+		if(satellite.getDataLancio()!=null && satellite.getDataRientro()!=null && satellite.getDataLancio().before(satellite.getDataRientro())) {
+			return true;
+		}
+		
+		if((satellite.getStato()!=StatoSatellite.IN_MOVIMENTO || satellite.getStato()!=StatoSatellite.FISSO) && satellite.getDataRientro()== null ) {
+			return true;
+		}
+		return false;
+		
+	}
 
 }
