@@ -89,22 +89,11 @@ public class SatelliteController {
 	}
 	
 	@PostMapping("/remove")
-	public String remove(@Valid @RequestParam(required = true) Long idSatellite, Model model, BindingResult result, RedirectAttributes redirectAttributes) {
-		if(result.hasErrors())
-			return "satellite/delete/{idSatellite}";
-		Satellite satellite= satelliteService.caricaSingoloElemento(idSatellite);
-		
-		//result
-		
-		if(satellite.getDataLancio()!=null && satellite.getDataRientro()==null ) {
-			result.rejectValue("dataLancio", "", "impossibile eliminare un satellite non ancora rientrato");
-			return "satellite/delete/{idSatellite}";
+	public String remove(@RequestParam(required = true) Long idSatellite, Model model, RedirectAttributes redirectAttributes) {
+		if(!satelliteValidator.isValidatorForDelete(satelliteService.caricaSingoloElemento(idSatellite))) {
+			redirectAttributes.addFlashAttribute("failedMessage", "Impossibile eliminare il satellite");
+			return "redirect:/satellite/listAll";
 		}
-		if(satellite.getStato().equals(StatoSatellite.DISATTIVATO) && satellite.getDataRientro()==null ) {
-			result.rejectValue("dataRientro", "", "impossibile eliminare un satellite non ancora rientrato");
-			return "satellite/delete/{idSatellite}";
-		}
-		
 		
 		satelliteService.rimuovi(idSatellite);
 		
