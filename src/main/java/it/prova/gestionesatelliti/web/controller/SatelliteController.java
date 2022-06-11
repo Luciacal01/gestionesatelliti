@@ -7,6 +7,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -35,14 +36,26 @@ public class SatelliteController {
 		return mv;
 	}
 	
+	@GetMapping("/search")
+	public String search() {
+		return "satellite/search";
+	}
+	
+	@PostMapping("/list")
+	public String listByExample(Satellite example, ModelMap model) {
+		List<Satellite> reslts= satelliteService.findByExample(example);
+		model.addAttribute("satellite_list_attribute", reslts);
+		return "satellite/list";
+	}
+	
 	@GetMapping("/insert")
 	public String create(Model model) {
-		model.addAttribute("insert_list_attribute", new Satellite());
+		model.addAttribute("insert_satellite_attribute", new Satellite());
 		return "satellite/insert";
 	}
 	
 	@PostMapping("/save")
-	public String save(@Valid @ModelAttribute("insert_list_attribute") Satellite satellite, BindingResult result, RedirectAttributes redirectAttributes) {
+	public String save(@Valid @ModelAttribute("insert_satellite_attribute") Satellite satellite, BindingResult result, RedirectAttributes redirectAttributes) {
 		if(result.hasErrors())
 			return "satellite/insert";
 		

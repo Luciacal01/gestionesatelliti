@@ -64,8 +64,7 @@ public class SatelliteServiceImpl implements SatelliteService {
 				predicates.add(cb.like(cb.upper(root.get("codice")), "%" + example.getCodice().toUpperCase() + "%"));
 
 			if (example.getDataLancio()!=null)
-				predicates.add(
-						cb.greaterThan(root.get("dataLancio"), example.getDataLancio()));
+				predicates.add(cb.greaterThanOrEqualTo(root.get("dataLancio"), example.getDataLancio()));
 			
 			if (example.getDataRientro() != null)
 				predicates.add(cb.greaterThanOrEqualTo(root.get("dataRientro"), example.getDataRientro()));

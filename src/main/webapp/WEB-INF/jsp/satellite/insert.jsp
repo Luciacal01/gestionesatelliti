@@ -55,13 +55,13 @@
 							<h6 class="card-title">I campi con <span class="text-danger">*</span> sono obbligatori</h6>
 		
 		
-							<form:form modelAttribute="insert_list_attribute" method="post" action="save" class="row g-3" novalidate="novalidate">
+							<form:form modelAttribute="insert_satellite_attribute" method="post" action="save" class="row g-3" novalidate="novalidate">
 							
 							
 								<div class="col-md-6">
 									<label for="denominazione" class="form-label">Denominazione <span class="text-danger">*</span></label>
 									<spring:bind path="denominazione">
-										<input type="text" name="denominazione" id="denominazione" class="form-control ${status.error ? 'is-invalid' : ''}" placeholder="Inserire il nome" value="${insert_list_attribute.denominazione }" required>
+										<input type="text" name="denominazione" id="denominazione" class="form-control ${status.error ? 'is-invalid' : ''}" placeholder="Inserire il nome" value="${insert_satellite_attribute.denominazione }" required>
 									</spring:bind>
 									<form:errors  path="denominazione" cssClass="error_field" />
 								</div>
@@ -69,12 +69,12 @@
 								<div class="col-md-6">
 									<label for="codice" class="form-label">Codice <span class="text-danger">*</span></label>
 									<spring:bind path="codice">
-										<input type="text" name="codice" id="codice" class="form-control ${status.error ? 'is-invalid' : ''}" placeholder="Inserire il codice" value="${insert_list_attribute.codice }" required>
+										<input type="text" name="codice" id="codice" class="form-control ${status.error ? 'is-invalid' : ''}" placeholder="Inserire il codice" value="${insert_satellite_attribute.codice }" required>
 									</spring:bind>
 									<form:errors  path="codice" cssClass="error_field" />
 								</div>
 							
-								<fmt:formatDate pattern='yyyy-MM-dd' var="parsedDate" type='date' value='${insert_list_attribute.dataLancio}' />
+								<fmt:formatDate pattern='yyyy-MM-dd' var="parsedDate" type='date' value='${insert_satellite_attribute.dataLancio}' />
 								<div class="col-md-3">
 									<label for="dataLancio" class="form-label">Data di Lancio <span class="text-danger"></span></label>
                         			<spring:bind path="dataLancio">
@@ -85,7 +85,7 @@
 	                            	<form:errors  path="dataLancio" cssClass="error_field" />
 								</div>
 								
-								<fmt:formatDate pattern='yyyy-MM-dd' var="parsedDate" type='date' value='${insert_list_attribute.dataRientro}' />
+								<fmt:formatDate pattern='yyyy-MM-dd' var="parsedDate" type='date' value='${insert_satellite_attribute.dataRientro}' />
 								<div class="col-md-3">
 									<label for="dataRientro" class="form-label">Data di Nascita <span class="text-danger"></span></label>
                         			<spring:bind path="dataRientro">
@@ -101,9 +101,9 @@
 								    <spring:bind path="stato">
 									    <select class="form-select ${status.error ? 'is-invalid' : ''}" id="stato" name="stato" required>
 									    	<option value="" selected> - Selezionare - </option>
-									    	<option value="IN_MOVIMENTO" ${insert_list_attribute.stato == 'IN_MOVIMENTO'?'selected':''}>IN_MOVIMENTO</option>
-									      	<option value="FISSO" ${insert_list_attribute.stato == 'FISSO'?'selected':''}>FISSO</option>
-									      	<option value="DISATTIVATO" ${insert_list_attribute.stato == 'DISATTIVATO'?'selected':''}>DISATTIVATO</option>
+									    	<option value="IN_MOVIMENTO" ${insert_satellite_attribute.stato == 'IN_MOVIMENTO'?'selected':''}>IN_MOVIMENTO</option>
+									      	<option value="FISSO" ${insert_satellite_attribute.stato == 'FISSO'?'selected':''}>FISSO</option>
+									      	<option value="DISATTIVATO" ${insert_satellite_attribute.stato == 'DISATTIVATO'?'selected':''}>DISATTIVATO</option>
 								    	</select>
 								    </spring:bind>
 								    <form:errors  path="stato" cssClass="error_field" />
