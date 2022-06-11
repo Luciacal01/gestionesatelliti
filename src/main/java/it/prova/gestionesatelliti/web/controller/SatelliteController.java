@@ -18,10 +18,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-
 import it.prova.gestionesatelliti.model.Satellite;
 import it.prova.gestionesatelliti.model.SatelliteValidator;
-import it.prova.gestionesatelliti.model.StatoSatellite;
 import it.prova.gestionesatelliti.service.SatelliteService;
 
 @Controller
@@ -63,9 +61,8 @@ public class SatelliteController {
 	
 	@PostMapping("/save")
 	public String save(@Valid @ModelAttribute("insert_satellite_attribute") Satellite satellite, BindingResult result, RedirectAttributes redirectAttributes) {
-		//if(satellite.getDataLancio()!=null || satellite.getDataRientro()!=null) {
-			satelliteValidator.validate(satellite, result);
-		//}
+		satelliteValidator.validate(satellite, result);
+		
 		
 		if(result.hasErrors()) 
 			return "satellite/insert";
@@ -100,6 +97,26 @@ public class SatelliteController {
 		redirectAttributes.addFlashAttribute("successMessage", "Operazione eseguita correttamente");
 		return "redirect:/satellite/listAll";
 		
+	}
+	
+	@GetMapping("/edit/{idSatellite}")
+	public String edit(@PathVariable(required = true) Long idSatellite,Model model) {
+		model.addAttribute("update_satellite_attr", satelliteService.caricaSingoloElemento(idSatellite));
+		return "satellite/edit";
+	}
+	
+	@PostMapping("/update")
+	public String update(@Valid @ModelAttribute("update_satellite_attr") Satellite satellite, BindingResult result, RedirectAttributes redirectAttributes) {
+		
+		satelliteValidator.validate(satellite, result);
+		
+		if(result.hasErrors())
+			return "satellite/edit";
+		
+		satelliteService.aggiorna(satellite);
+		
+		redirectAttributes.addFlashAttribute("successMessage", "Operazione eseguita correttamente");
+		return "redirect:/satellite/listAll";
 	}
 	
 }
