@@ -57,21 +57,20 @@ public class SatelliteController {
 	
 	@PostMapping("/save")
 	public String save(@Valid @ModelAttribute("insert_satellite_attribute") Satellite satellite, BindingResult result, RedirectAttributes redirectAttributes) {
-		if(result.hasErrors())
+		if(result.hasErrors()) 
 			return "satellite/insert";
-		
-		if(satellite.getStato().equals(StatoSatellite.DISATTIVATO) && satellite.getDataRientro()== null) {
-			result.rejectValue("dataRientro","", "Inserire una data di rientro, modificare");
-			return "satellite/insert";
-		}
-		
-		if(satellite.getDataLancio().after(satellite.getDataRientro())) {
-			result.rejectValue("dataLancio","", "La data di rientro deve essere a null, modificare");
-			return "satellite/insert";
-		}
-		
-		if((satellite.getStato().equals(StatoSatellite.IN_MOVIMENTO) || satellite.getStato().equals(StatoSatellite.FISSO)) && satellite.getDataRientro()!= null ) {
-			result.rejectValue("dataRientro","", "Data di rientro precedente della data di lancio, modificare");
+		if(satellite.getDataLancio()!=null || satellite.getDataRientro()!=null || satellite.getStato()!=null) {
+			if(satellite.getStato().equals(StatoSatellite.DISATTIVATO) && satellite.getDataRientro()== null) {
+				result.rejectValue("stato","", "Inserire una data di rientro, modificare");
+			}
+			
+			if(satellite.getDataLancio().after(satellite.getDataRientro())) {
+				result.rejectValue("dataLancio","", "Data di rientro precedente della data di lancio, modificare");
+			}
+			
+			if((satellite.getStato().equals(StatoSatellite.IN_MOVIMENTO) || satellite.getStato().equals(StatoSatellite.FISSO)) && satellite.getDataRientro()!= null ) {
+				result.rejectValue("dataRientro","", "La data di rientro deve essere a null, modificare");
+			}
 			return "satellite/insert";
 		}
 		
