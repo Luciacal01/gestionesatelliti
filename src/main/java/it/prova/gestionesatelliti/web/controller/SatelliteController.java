@@ -91,7 +91,7 @@ public class SatelliteController {
 	
 	@PostMapping("/remove")
 	public String remove(@RequestParam(required = true) Long idSatellite, Model model, RedirectAttributes redirectAttributes) {
-		if(satelliteValidator.isValidatorForDelete(satelliteService.caricaSingoloElemento(idSatellite))) {
+		if(!satelliteValidator.isValidatorForDelete(satelliteService.caricaSingoloElemento(idSatellite))) {
 			redirectAttributes.addFlashAttribute("failedMessage", "Impossibile cancellare satellite");
 			return "redirect:/satellite/listAll";
 		}
@@ -144,12 +144,27 @@ public class SatelliteController {
 	}
 	
 	@GetMapping("/dueAnni")
-	public String dueAnni(Model model) throws Exception {
-		List<Satellite> satelliInOrbitaPerAlmenoDueAnni= satelliteService.cercaSatellitiInOrbitaPerPiùDiDueAnni(new SimpleDateFormat("dd-MM-yyyy").parse("01-01-2020"), StatoSatellite.DISATTIVATO);
+	public String dueAnni(Model model) throws ParseException {
+		List<Satellite> satelliInOrbitaPerAlmenoDueAnni= satelliteService.cercaSatellitiInOrbitaPerPiùDiDueAnni(new SimpleDateFormat("dd-MM_yyyy").parse("01-01-2020"), StatoSatellite.DISATTIVATO);
 		model.addAttribute("satellite_list_attribute", satelliInOrbitaPerAlmenoDueAnni);
 		return "satellite/list";
 		
 	}
 	
+	@GetMapping("/nonRientrati")
+	public String nonRientrati(Model model) {
+		List<Satellite> satellitiNonRientrati= satelliteService.cercaSatellitiNonRientrati(StatoSatellite.DISATTIVATO);
+		model.addAttribute("satellite_list_attribute", satellitiNonRientrati);
+		return "satellite/list";
+		
+	}
+	
+	@GetMapping("/rimastiInOrbita")
+	public String a(Model model) throws Exception {
+		List<Satellite> satellitiInOrbitaPerDieciAnni= satelliteService.cercaSatellitiDisattivatiErimastiInOrbitaPer(new SimpleDateFormat("dd-MM-yyyy").parse("01-01-2012"), null, StatoSatellite.FISSO);
+		model.addAttribute("satellite_list_attribute", satellitiInOrbitaPerDieciAnni);
+		return "satellite/list";
+		
+	}
 	
 }

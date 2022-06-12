@@ -41,10 +41,10 @@ public class SatelliteValidator implements Validator {
 	public boolean isValidatorForDelete(Object target) {
 		Satellite satellite= (Satellite) target;
 		
-		if(satellite.getDataLancio()!=null ) {
+		if(satellite.getDataLancio()==null ) {
 			return true;
 		}
-		if(satellite.getStato()==StatoSatellite.DISATTIVATO && satellite.getDataRientro()==null ) {
+		if(satellite.getStato()==StatoSatellite.DISATTIVATO && satellite.getDataRientro()!=null ) {
 			return true;
 		}
 		
