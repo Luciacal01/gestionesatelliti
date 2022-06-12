@@ -161,7 +161,7 @@ public class SatelliteController {
 	
 	@GetMapping("/rimastiInOrbita")
 	public String a(Model model) throws Exception {
-		List<Satellite> satellitiInOrbitaPerDieciAnni= satelliteService.cercaSatellitiDisattivatiErimastiInOrbitaPer(new SimpleDateFormat("dd-MM-yyyy").parse("01-01-2012"), null, StatoSatellite.FISSO);
+		List<Satellite> satellitiInOrbitaPerDieciAnni= satelliteService.cercaSatellitiFissiErimastiInOrbitaPer(new SimpleDateFormat("dd-MM-yyyy").parse("01-01-2012"), StatoSatellite.FISSO);
 		model.addAttribute("satellite_list_attribute", satellitiInOrbitaPerDieciAnni);
 		return "satellite/list";
 		

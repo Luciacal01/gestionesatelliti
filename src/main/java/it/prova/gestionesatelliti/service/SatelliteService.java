@@ -21,7 +21,7 @@ public interface SatelliteService {
 	
 	public List<Satellite> cercaSatellitiInOrbitaPerPiùDiDueAnni(Date data, StatoSatellite stato);
 	
-	public List<Satellite> cercaSatellitiDisattivatiErimastiInOrbitaPer(Date dataLancio, Date dataRientro,StatoSatellite stato);
+	public List<Satellite> cercaSatellitiFissiErimastiInOrbitaPer(Date dataLancio, StatoSatellite stato);
 	
 	public List<Satellite> cercaSatellitiNonRientrati(StatoSatellite stato);
 	

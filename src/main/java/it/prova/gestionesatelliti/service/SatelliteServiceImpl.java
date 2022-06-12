@@ -86,9 +86,8 @@ public class SatelliteServiceImpl implements SatelliteService {
 	}
 
 	@Override
-	public List<Satellite> cercaSatellitiDisattivatiErimastiInOrbitaPer(Date dataLancio, Date dataRientro,
-			StatoSatellite stato) {
-		return (List<Satellite>) repository.findAllByDataLancioAndDataRientroAndStato(dataLancio, dataRientro, stato);
+	public List<Satellite> cercaSatellitiFissiErimastiInOrbitaPer(Date dataLancio, StatoSatellite stato) {
+		return (List<Satellite>) repository.findAllByDataLancioBeforeAndStato(dataLancio, stato);
 	}
 
 	@Override
